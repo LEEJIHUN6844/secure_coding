@@ -1,7 +1,7 @@
 # Tiny Second-hand Shopping Platform
 
 시큐어 코딩 과제로 개발한 중고거래 플랫폼입니다.
-Flask + Socket.IO + SQLite 기반이며, 개발 전 과정에서 보안 약점을 제거하는 것을 목표로 했습니다.
+Flask + Socket.IO + SQLite 기반이며, 개발 전 과정에서 보안 약점을 제거하는 것을 최우선 목표로 진행했습니다!
 
 ## 주요 기능
 
