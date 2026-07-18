@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ profile['username'] }} 프로필{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>{{ profile['username'] }}</h1>
+  <p>{{ profile['bio'] or '소개글이 없습니다.' }}</p>
+  <p class="muted">가입일: {{ profile['created_at'] }}</p>
+  {% if g.user and g.user['id'] != profile['id'] %}
+  <div class="actions">
+    <form class="inline" method="post" action="{{ url_for('chat.dm_start', user_id=profile['id']) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit">1:1 채팅</button>
+    </form>
+    <a class="btn" href="{{ url_for('wallet.index', receiver=profile['username']) }}">송금</a>
+    <a class="btn danger" href="{{ url_for('reports.new', target_type='user', target_id=profile['id']) }}">신고</a>
+  </div>
+  {% endif %}
+</div>
+
+<h2>판매 중인 상품</h2>
+<div class="product-grid">
+  {% for p in products %}
+  <a class="product-card" href="{{ url_for('products.detail', product_id=p['id']) }}">
+    {% if p['image'] %}<img src="{{ url_for('products.uploaded_file', name=p['image']) }}" alt="">
+    {% else %}<div class="product-thumb">📦</div>{% endif %}
+    <div class="product-title">{{ p['title'] }}</div>
+    <div class="product-price">{{ "{:,}".format(p['price']) }}원</div>
+  </a>
+  {% else %}
+  <p>판매 중인 상품이 없습니다.</p>
+  {% endfor %}
+</div>
+{% endblock %}

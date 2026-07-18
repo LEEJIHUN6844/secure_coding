@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}상품 목록{% endblock %}
+{% block content %}
+<div class="layout-with-chat">
+  <section>
+    <form class="search" method="get" action="{{ url_for('products.index') }}">
+      <input name="q" value="{{ q }}" maxlength="50" placeholder="상품명 검색">
+      <button type="submit">검색</button>
+    </form>
+    <h1>상품 목록</h1>
+    <div class="product-grid">
+      {% for p in products %}
+      <a class="product-card" href="{{ url_for('products.detail', product_id=p['id']) }}">
+        {% if p['image'] %}<img src="{{ url_for('products.uploaded_file', name=p['image']) }}" alt="">
+        {% else %}<div class="product-thumb">📦</div>{% endif %}
+        <div class="product-title">{{ p['title'] }}</div>
+        <div class="product-price">{{ "{:,}".format(p['price']) }}원</div>
+      </a>
+      {% else %}
+      <p>{% if q %}검색 결과가 없습니다.{% else %}등록된 상품이 없습니다.{% endif %}</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% if g.user %}
+  <aside class="card chat-panel">
+    <h2>전체 채팅</h2>
+    <div id="chat-messages" data-room="global">
+      {% for m in recent_messages %}
+      <div class="chat-msg"><b>{{ m['username'] }}</b> {{ m['content'] }}</div>
+      {% endfor %}
+    </div>
+    <form id="chat-form">
+      <input id="chat-input" maxlength="500" placeholder="메시지 입력" autocomplete="off">
+      <button type="submit">전송</button>
+    </form>
+  </aside>
+  {% endif %}
+</div>
+{% endblock %}
+{% block scripts %}
+{% if g.user %}
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endif %}
+{% endblock %}

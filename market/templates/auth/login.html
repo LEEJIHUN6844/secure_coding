@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}로그인{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <h1>로그인</h1>
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>아이디
+      <input name="username" required maxlength="20" autocomplete="username">
+    </label>
+    <label>비밀번호
+      <input type="password" name="password" required maxlength="72" autocomplete="current-password">
+    </label>
+    <button type="submit">로그인</button>
+  </form>
+  <p><a href="{{ url_for('auth.register') }}">계정이 없으신가요? 회원가입</a></p>
+</div>
+{% endblock %}

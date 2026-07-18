@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}1:1 채팅{% endblock %}
+{% block content %}
+<h1>1:1 채팅</h1>
+{% if threads %}
+<ul class="thread-list">
+  {% for t in threads %}
+  <li>
+    <a href="{{ url_for('chat.dm_room', thread_id=t['id']) }}">
+      {{ t['name_hi'] if t['name_lo'] == g.user['username'] else t['name_lo'] }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>진행 중인 채팅이 없습니다. 상품 페이지에서 판매자와 채팅을 시작해보세요.</p>
+{% endif %}
+{% endblock %}

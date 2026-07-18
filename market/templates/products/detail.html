@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ product['title'] }}{% endblock %}
+{% block content %}
+<div class="card">
+  {% if product['status'] != 'active' %}<div class="flash">차단된 상품입니다.</div>{% endif %}
+  <div class="detail-layout">
+    {% if product['image'] %}
+    <img class="detail-image" src="{{ url_for('products.uploaded_file', name=product['image']) }}" alt="{{ product['title'] }}">
+    {% endif %}
+    <div>
+      <h1>{{ product['title'] }}</h1>
+      <p class="product-price big">{{ "{:,}".format(product['price']) }}원</p>
+      <p>판매자:
+        <a href="{{ url_for('auth.user_detail', user_id=product['seller_id']) }}">{{ product['seller_name'] }}</a>
+      </p>
+      <p class="muted">등록일: {{ product['created_at'] }}</p>
+      <p class="description">{{ product['description'] }}</p>
+
+      {% if g.user %}
+      <div class="actions">
+        {% if g.user['id'] != product['seller_id'] %}
+        <form class="inline" method="post" action="{{ url_for('chat.dm_start', user_id=product['seller_id']) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit">판매자와 채팅</button>
+        </form>
+        <a class="btn" href="{{ url_for('wallet.index', receiver=product['seller_name']) }}">송금</a>
+        <a class="btn danger" href="{{ url_for('reports.new', target_type='product', target_id=product['id']) }}">신고</a>
+        {% endif %}
+        {% if g.user['id'] == product['seller_id'] or g.user['role'] == 'admin' %}
+        <a class="btn" href="{{ url_for('products.edit', product_id=product['id']) }}">수정</a>
+        <form class="inline" method="post" action="{{ url_for('products.delete', product_id=product['id']) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="danger">삭제</button>
+        </form>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
