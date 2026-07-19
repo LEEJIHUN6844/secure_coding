@@ -29,7 +29,6 @@ conda activate tiny-market
 pip install -r requirements.txt
 
 venv 가상환경 기준:
-```bash
 # 1. 저장소 클론
 git clone https://github.com/<사용자명>/secure-coding.git
 cd secure-coding
