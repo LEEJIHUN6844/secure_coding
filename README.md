@@ -27,21 +27,19 @@ conda activate tiny-market
 
 # 3. 의존성 설치
 pip install -r requirements.txt
-```
+c
 
 venv 가상환경 기준:
 ```bash
 # 1. 저장소 클론
 git clone https://github.com/<사용자명>/secure-coding.git
 cd secure-coding
-
 # 2. 가상환경 생성 및 활성화
 python3 -m venv .venv
 source .venv/bin/activate
-```
 # 3. 의존성 설치
 pip install -r requirements.txt
-
+```
 ## 실행 방법
 
 ```bash
